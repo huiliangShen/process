@@ -5,11 +5,13 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  flex-wrap: wrap;
 
   .process-node {
     display: flex;
     flex-direction: column;
     width: 220px;
+    margin: 0 auto;
 
     .process-node-header {
       padding: 10px;
@@ -64,41 +66,91 @@
       border-radius: 50%;
       margin: auto;
     }
+
     .process-end-node-text {
       font-size: 12px;
     }
   }
 
+  .conditions-wrap {
+    margin-top: 15px;
+  }
+
   .conditions {
     position: relative;
-    padding-top: 15px;
     border-top: 2px solid #000;
     border-bottom: 2px solid #000;
     display: flex;
     justify-content: space-between;
+    min-height: 250px;
 
     .conditions-add {
       position: absolute;
       width: 120px;
+      padding: 5px 0;
       background: #fff;
       text-align: center;
-      top: -10px;
+      top: -18px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 2;
     }
+
     .conditions-columns {
       position: relative;
-      padding: 0 10px;
+      display: flex;
+      background: #eee;
+
+      .conditions-columns-box {
+        position: relative;
+        padding: 25px 15px 0;
+        z-index: 2;
+
+        .top, .bottom {
+          position: absolute;
+          height: 5px;
+          width: 50%;
+          background: #eee;
+        }
+      }
+
+      &:first-of-type  {
+        & > .conditions-columns-box {
+          & > .top {
+            top: -3px;
+            left: -1px;
+          }
+
+          & > .bottom {
+            bottom: -3px;
+            left: -1px;
+          }
+        }
+      }
+
+      &:last-of-type {
+        & > .conditions-columns-box {
+          & > .top {
+            top: -3px;
+            right: -1px;
+          }
+
+          & > .bottom {
+            bottom: -3px;
+            right: -1px;
+          }
+        }
+
+      }
 
       &:before {
         position: absolute;
-        top: -17px;
-        bottom: 0;
+        top: -2px;
+        bottom: -2px;
         left: 50%;
+        width: 2px;
         transform: translateX(-50%);
         content: ' ';
-        width: 2px;
         background: #000;
       }
     }
