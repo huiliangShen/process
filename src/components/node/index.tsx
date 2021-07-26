@@ -2,7 +2,7 @@ import React from 'react'
 import AddButton from "../addButton";
 import {INode} from "../../App";
 
-const Node: React.FC<{ data: INode }> = ({data}) => {
+const Node: React.FC<{ data: INode, onAdd?: (type: string, data: INode) => void }> = ({data, onAdd}) => {
     return <div>
         <div className="process-node">
             <div className="process-node-header">{data.name || '-'}</div>
@@ -10,7 +10,7 @@ const Node: React.FC<{ data: INode }> = ({data}) => {
                 {data.description}
             </div>
         </div>
-        <AddButton data={data}/>
+        <AddButton data={data} onClick={(type, data) => onAdd?.(type, data)}/>
     </div>
 }
 

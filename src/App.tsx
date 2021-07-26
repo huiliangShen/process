@@ -3,7 +3,7 @@ import Process from './components'
 import './App.css'
 import 'antd/dist/antd.css'
 
-type INodeType = 'condition' | 'normal' | 'end'
+type INodeType = 'condition' | 'normal' | 'end' | 'middleware'
 
 export interface INode {
     id: string

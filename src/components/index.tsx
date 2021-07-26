@@ -1,24 +1,73 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Node from './node'
 import Conditions from './conditions'
 import EndNode from './endNode'
 import './index.less'
 import type {IProcess, INode} from '../App'
 
-const RenderNode: React.FC<{ node: INode }> = ({node}) => {
+const RenderNode: React.FC<{ node: INode, onAdd: (type: string, data: INode) => void }> = ({node, onAdd}) => {
     return <React.Fragment>
         {
-            node.type === 'normal' && <Node data={node}/>
+            node.type === 'normal' && <Node data={node} onAdd={onAdd}/>
         }
         {
-            node.type === 'condition' && <Conditions conditions={node.conditions}/>
+            node.type === 'condition' && <Conditions data={node}/>
         }
     </React.Fragment>
 }
 
+const map = new Map<String, any>()
+let cloneData: INode
+
+function deepLoop(node: INode) {
+    if (!node) {
+        return
+    }
+
+    map.set(node.id, node)
+
+    node.children && deepLoop(node.children)
+
+    node.conditions?.forEach(deepLoop)
+}
+
 const Process: React.FC<{ process: IProcess }> = ({process}) => {
+    const [node, setNode] = useState<INode>()
+    const handleOnAdd = (type: any, node: INode) => {
+        node = map.get(node.id)
+        node.children = {
+            type,
+            id: (+new Date()).toString(),
+            name: 'test',
+            description: '我就看看',
+        }
+        console.log(cloneData)
+        setNode(cloneData)
+    }
+
+    useEffect(() => {
+        if (process.node) {
+            setNode(process.node)
+            cloneData = JSON.parse(JSON.stringify(process.node))
+            deepLoop(cloneData)
+            console.log(map)
+        }
+    }, [process])
+
+    const DeepRender = (node: INode) => {
+        return <>
+            <RenderNode node={node!} onAdd={handleOnAdd}/>
+            {
+                node.conditions &&  node.conditions.map(item => <RenderNode key={item.id} node={node!} onAdd={handleOnAdd}/>)
+            }
+            {
+                node.children && <RenderNode node={node.children} onAdd={handleOnAdd}/>
+            }
+        </>
+    }
+
     return <div className={'process-wrap'}>
-        {process.node && <RenderNode node={process.node}/>}
+        {node && DeepRender(node)}
         <EndNode/>
     </div>
 }
