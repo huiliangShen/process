@@ -1,13 +1,14 @@
 import React from 'react'
+import {INode} from "../../App";
 
-const Conditions = () => {
+const Conditions: React.FC<{ conditions: INode[] }> = ({conditions}) => {
     return <div className="conditions-wrap">
         <div className="conditions">
             <div className="conditions-add">
                 <a className={'conditions-add-btn'}>添加条件</a>
             </div>
             {
-                new Array(6).fill(null).map((_, i) => (
+                conditions.map((item, i) => (
                         <section className="conditions-columns" key={i}>
                             <div className="conditions-columns-box">
                                 {(i === 0 || i === 5) && <>
@@ -16,9 +17,9 @@ const Conditions = () => {
                                 </>}
                                 <div>
                                     <div className="process-node">
-                                        <div className="process-node-header">asdqw</div>
+                                        <div className="process-node-header">{item.name}</div>
                                         <div className="process-node-content">
-                                            hahah
+                                            {item.description}
                                         </div>
                                     </div>
                                     <div className="process-add-btn">

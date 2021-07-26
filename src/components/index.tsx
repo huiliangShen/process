@@ -3,12 +3,23 @@ import Node from './node'
 import Conditions from './conditions'
 import EndNode from './endNode'
 import './index.less'
+import type {IProcess, INode} from '../App'
 
-const Process = () => {
+const RenderNode: React.FC<{ node: INode }> = ({node}) => {
+    return <React.Fragment>
+        {
+            node.type === 'normal' && <Node data={node}/>
+        }
+        {
+            node.type === 'condition' && <Conditions conditions={node.conditions}/>
+        }
+    </React.Fragment>
+}
+
+const Process: React.FC<{ process: IProcess }> = ({process}) => {
     return <div className={'process-wrap'}>
-        <Node />
-        <Conditions />
-        <EndNode />
+        {process.node && <RenderNode node={process.node}/>}
+        <EndNode/>
     </div>
 }
 
